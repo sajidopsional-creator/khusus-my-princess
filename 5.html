@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>💔 game rasa · rash</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui,sans-serif}
+body{background:linear-gradient(145deg,#1a0b1e,#2d1b2e);min-height:100vh;display:flex;justify-content:center;align-items:center;margin:0;padding:16px}
+.g{background:rgba(20,10,25,.9);backdrop-filter:blur(10px);border:1px solid #ff77aa66;border-radius:42px;padding:28px 24px;max-width:480px;width:100%;box-shadow:0 25px 40px -10px #0a000f,0 0 30px #ff3b8b22;position:relative}
+h2{text-align:center;font-weight:500;font-size:1.7rem;color:#ffe2f0;margin:0 0 8px;text-shadow:0 0 12px #ff5c9e}
+.sub{text-align:center;color:#c79bb0;margin:0 0 22px;font-style:italic;font-size:.95rem;border-bottom:1px dashed #ff88bb55;padding-bottom:14px}
+.qb{background:#261b2c;border-radius:36px;padding:24px 18px;margin-bottom:18px;border:1px solid #ff99bb44;box-shadow:0 8px 0 #0f0712}
+.qt{font-size:1.5rem;font-weight:600;color:#ffd9e8;text-align:center;line-height:1.3;text-shadow:0 0 6px #ff5599}
+.opts{display:flex;flex-direction:column;gap:14px;margin-top:22px}
+.ob{background:#1e1424;border:2px solid #ff77aa66;border-radius:60px;padding:16px 12px 16px 26px;font-size:1.1rem;font-weight:600;color:#ffd7e9;cursor:pointer;transition:.2s;text-align:left;box-shadow:0 6px 0 #0b060e;display:flex;align-items:center;gap:12px}
+.ob::before{content:"❤️";font-size:1.4rem;filter:drop-shadow(0 0 6px #ff4d7a)}
+.ob:last-child::before{content:"💔"}
+.ob:active{transform:translateY(4px);box-shadow:0 2px 0 #0b060e}
+.ob:hover{background:#301f38;border-color:#ffa0c0}
+.ra{margin-top:22px;display:none}.ra.show{display:block}
+.rl{font-size:.9rem;color:#ffb0cc;font-weight:600;margin-bottom:8px;display:block}
+.ri{width:100%;min-height:90px;resize:vertical;background:#1a0f1e;border:1.5px solid #ff88bb66;border-radius:22px;padding:14px 16px;color:#ffe4f0;font-size:1rem;font-family:inherit;outline:none}
+.ri:focus{border-color:#ffaad0;box-shadow:0 0 12px #ff3b8b33}
+.rs{margin-top:12px;width:100%;background:#ff77aa22;border:2px solid #ff99cc;color:#ffe4f2;padding:14px;border-radius:60px;font-weight:700;font-size:1rem;cursor:pointer;box-shadow:0 6px 0 #0b060e}
+.rs:hover{background:#ff88bb44}.rs:active{transform:translateY(3px);box-shadow:0 3px 0 #0b060e}
+.st{display:flex;justify-content:space-between;align-items:center;margin:16px 6px 0;color:#bd8fa8;font-size:.9rem}
+.bg{background:#2e1b2a;padding:6px 16px;border-radius:50px;border:1px solid #ff88bb44;color:#ffbfd9}
+.rb{background:transparent;border:1.5px solid #ff88bb77;color:#ffb0cc;padding:8px 18px;border-radius:40px;font-weight:600;font-size:.9rem;cursor:pointer}
+.rb:hover{background:#ff88bb22}
+.fn{text-align:center;margin-top:20px;font-size:.8rem;color:#a5758b}
+.fm{margin-top:16px;text-align:center;color:#ffb0d0;font-weight:600;background:#1e0f1c;padding:10px;border-radius:30px}
+.mute{position:absolute;top:14px;right:18px;background:#2e1b2a;border:1px solid #ff88bb55;color:#ffbfd9;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1.1rem;z-index:5}
+.photo-area{margin-top:18px;display:none;text-align:center}
+.photo-area.show{display:block}
+.photo-label{color:#ffb0cc;font-weight:600;font-size:1rem;margin-bottom:12px;display:block}
+.photo-btn{background:#ff77aa22;border:2px solid #ff99cc;color:#ffe4f2;padding:16px 22px;border-radius:60px;font-weight:700;font-size:1rem;cursor:pointer;box-shadow:0 6px 0 #0b060e;width:100%}
+.photo-btn:hover{background:#ff88bb44}
+.photo-preview{max-width:100%;max-height:200px;border-radius:22px;margin-top:14px;border:2px solid #ff99cc;display:none}
+.photo-preview.show{display:inline-block}
+.send-btn{margin-top:14px;width:100%;background:#ff4f8b;border:2px solid #ffb0d0;color:#fff;padding:16px;border-radius:60px;font-weight:800;font-size:1.05rem;cursor:pointer;box-shadow:0 6px 0 #5a0f2a;display:none}
+.send-btn.show{display:block}
+.send-btn:hover{background:#ff6b9d}
+</style>
+</head>
+<body>
+<div class="g">
+<button class="mute" id="muteBtn">🔊</button>
+<h2>💬 apakah kamu mencintai rash?</h2>
+<div class="sub">— game rasa · jawaban tersimpan otomatis —</div>
+<div class="qb">
+<div class="qt" id="qd">Apakah kamu mencintai Rash?</div>
+<div class="opts" id="oc"></div>
+<div class="ra" id="ra">
+<label class="rl" for="ri">✍️ tulis alasanmu (wajib):</label>
+<textarea class="ri" id="ri" placeholder="tulis alasanmu..."></textarea>
+<button class="rs" id="rs">💾 simpan &amp; lanjut</button>
+</div>
+<div class="photo-area" id="pa">
+<span class="photo-label">📸 terakhir: kirim fotomu lewat galeri</span>
+<button class="photo-btn" id="pickBtn">🖼️ pilih foto dari galeri</button>
+<input type="file" id="fileIn" accept="image/*" hidden>
+<img class="photo-preview" id="preview">
+<button class="send-btn" id="sendBtn">📤 kirim foto &amp; selesai</button>
+</div>
+</div>
+<div class="st"><span class="bg" id="pb">0 / 0</span><button class="rb" id="rst">⟲ mulai ulang</button></div>
+<div class="fn">✨ jawaban, alasan &amp; foto tersimpan di localStorage ✨</div>
+</div>
+<script>
+(function(){
+// ==== AUDIO ====
+let actx=null,muted=false;
+function ac(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();return actx;}
+function tone(f,d,t='sine',v=.15,dl=0){
+  if(muted)return;
+  try{
+    const c=ac(),o=c.createOscillator(),g=c.createGain();
+    o.type=t;o.frequency.value=f;const s=c.currentTime+dl;
+    g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(v,s+.01);
+    g.gain.exponentialRampToValueAtTime(.001,s+d);
+    o.connect(g);g.connect(c.destination);o.start(s);o.stop(s+d+.05);
+  }catch(e){}
+}
+const sfx={
+  click:()=>tone(520,.08,'triangle',.12),
+  pick:()=>{tone(660,.09);tone(880,.1,'sine',.1,.06);},
+  save:()=>{tone(523,.1);tone(659,.1,'sine',.12,.08);tone(784,.15,'sine',.12,.16);},
+  next:()=>tone(700,.1,'triangle',.1),
+  finish:()=>[523,659,784,1046].forEach((f,i)=>tone(f,.18,'sine',.13,i*.12)),
+  reset:()=>{tone(400,.12,'sawtooth',.08);tone(300,.15,'sawtooth',.08,.1);},
+  err:()=>{tone(200,.15,'square',.1);tone(150,.15,'square',.1,.12);},
+  photo:()=>{tone(880,.1);tone(1175,.12,'sine',.12,.08);}
+};
+document.getElementById('muteBtn').onclick=function(){
+  muted=!muted;this.textContent=muted?'🔇':'🔊';if(!muted)sfx.click();
+};
+
+// ==== GAME ====
+const questions=[
+  {text:"Apakah kamu mencintai Rash?",options:["Iya, aku mencintai Rash ❤️","Tidak, aku tidak mencintainya 💔"]},
+  {text:"Apakah kamu mau iclik sama Rash?",options:["Iya, aku mau iclik 🥰","Tidak, aku tidak mau"]},
+  {text:"Apakah kamu mau ciuman sama Rash?",options:["Iya, aku mau ciuman 😘","Tidak, aku tidak mau"]},
+  {text:"Apakah kamu mau kokop sama Rash?",options:["Iya, aku mau kokop 😏","Tidak, aku tidak mau"]},
+  {text:"Apakah kamu mau pelukan sama Rash?",options:["Iya, aku mau pelukan 🤗","Tidak, aku tidak mau"]},
+  {text:"Apakah kamu mencintai Rash sepenuh hati?",options:["Iya, sepenuh hati 💖","Tidak, tidak sepenuh hati"]},
+  {text:"Jika kamu tidak menghargai, gimana perasaanmu?",options:["Aku tetap menghargai perasaanku ✨","Aku tidak menghargainya 💔"]},
+  {text:"Apakah kamu percaya Rash orang yang bisa dipercaya?",options:["Iya, aku percaya sepenuhnya 🤍","Belum, aku masih ragu"]},
+  {text:"Apakah kamu ingin komitmen serius dengan Rash?",options:["Iya, aku siap berkomitmen 💍","Tidak, belum siap"]},
+  {text:"Apakah kamu nyaman cerita semua hal ke Rash?",options:["Iya, nyaman banget 🫶","Tidak, masih tertutup"]},
+  {text:"Apakah kamu ingin merayakan momen spesial bersama Rash?",options:["Iya, selalu ada 🎉","Tidak, aku tidak tertarik"]},
+  {text:"Apakah kamu merasa tenang saat dekat dengan Rash?",options:["Iya, tenang & aman 🌷","Tidak, biasa saja"]}
+];
+const KEY='rash_game_answers', PHOTO_KEY='rash_game_photo', TOTAL=questions.length;
+let answers=[], pending=null, photoData=null;
+const qd=document.getElementById('qd'), oc=document.getElementById('oc'),
+      pb=document.getElementById('pb'), ra=document.getElementById('ra'),
+      ri=document.getElementById('ri'), rs=document.getElementById('rs'),
+      pa=document.getElementById('pa'), pickBtn=document.getElementById('pickBtn'),
+      fileIn=document.getElementById('fileIn'), preview=document.getElementById('preview'),
+      sendBtn=document.getElementById('sendBtn');
+
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(answers));}catch(e){}};
+const load=()=>{try{const s=localStorage.getItem(KEY);answers=s?JSON.parse(s).filter(a=>a&&a.question&&a.answer):[];}catch(e){answers=[];}};
+const prog=()=>pb.textContent=`${answers.length} / ${TOTAL}`;
+
+function render(){
+  const old=document.querySelector('.fm'); if(old) old.remove();
+  if(answers.length>=TOTAL){ showPhotoStage(); return; }
+  renderQ(answers.length,false);
+}
+function renderQ(i,ro){
+  const q=questions[i]; if(!q) return;
+  qd.textContent=q.text; oc.innerHTML=''; ra.classList.remove('show'); ri.value=''; pending=null;
+  pa.classList.remove('show');
+  const ex=answers.find(a=>a.question===q.text);
+  q.options.forEach((t,k)=>{
+    const b=document.createElement('button'); b.className='ob'; b.textContent=t;
+    if(ex){
+      if(ex.optionIndex===k){b.style.background='#4a2540';b.style.borderColor='#ffa0d0';b.style.boxShadow='0 0 0 2px #ff77bb,0 6px 0 #0b060e';}
+      b.disabled=true; b.style.opacity='.7'; b.style.cursor='default';
+    } else b.onclick=()=>pick(i,k,t);
+    oc.appendChild(b);
+  });
+  if(ex&&ro){ra.classList.add('show');ri.value=ex.reason||'';ri.disabled=true;rs.style.display='none';}
+}
+function pick(qi,oi,txt){
+  sfx.pick();
+  Array.from(oc.children).forEach((b,i)=>{
+    if(i===oi){b.style.background='#4a2540';b.style.borderColor='#ffa0d0';b.style.boxShadow='0 0 0 2px #ff77bb,0 6px 0 #0b060e';}
+    else{b.style.background='#1e1424';b.style.borderColor='#ff77aa66';b.style.boxShadow='0 6px 0 #0b060e';}
+  });
+  pending={question:questions[qi].text,answer:txt,optionIndex:oi};
+  ra.classList.add('show'); ri.disabled=false; rs.style.display='block'; ri.value=''; ri.focus();
+}
+rs.onclick=()=>{
+  if(!pending) return;
+  const r=ri.value.trim();
+  if(!r){sfx.err(); alert('alasan harus diisi dulu ya ✍️'); return;}
+  if(answers.some(a=>a.question===pending.question)) return;
+  sfx.save();
+  answers.push({...pending,reason:r,timestamp:Date.now()});
+  save(); prog(); pending=null; ra.classList.remove('show');
+  setTimeout(()=>{render(); sfx.next();},250);
+};
+
+// ==== FOTO STAGE ====
+function showPhotoStage(){
+  oc.innerHTML=''; ra.classList.remove('show');
+  qd.textContent='🎉 semua pertanyaan sudah dijawab!';
+  pa.classList.add('show');
+  const old=document.querySelector('.fm'); if(old) old.remove();
+  sfx.finish();
+  // kalau sudah ada foto tersimpan, tampilkan
+  const saved=localStorage.getItem(PHOTO_KEY);
+  if(saved){ photoData=saved; preview.src=saved; preview.classList.add('show'); sendBtn.classList.add('show'); }
+}
+pickBtn.onclick=()=>{ sfx.click(); fileIn.click(); };
+fileIn.onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  if(!f.type.startsWith('image/')){sfx.err(); alert('harus file gambar ya'); return;}
+  if(f.size>2*1024*1024){sfx.err(); alert('foto terlalu besar (maks 2MB)'); return;}
+  const rd=new FileReader();
+  rd.onload=ev=>{
+    photoData=ev.target.result;
+    preview.src=photoData; preview.classList.add('show');
+    sendBtn.classList.add('show'); sfx.photo();
+  };
+  rd.readAsDataURL(f);
+};
+sendBtn.onclick=()=>{
+  if(!photoData){sfx.err(); alert('pilih foto dulu ya'); return;}
+  try{ localStorage.setItem(PHOTO_KEY,photoData); }
+  catch(e){ sfx.err(); alert('foto terlalu besar untuk disimpan, coba yang lebih kecil'); return; }
+  sfx.save();
+  sendBtn.textContent='✅ terkirim! keluar...';
+  sendBtn.disabled=true;
+  setTimeout(()=>{
+    // keluar dari halaman
+    window.location.href='about:blank';
+    try{ window.close(); }catch(e){}
+    document.body.innerHTML='<div style="color:#ffb0d0;font-family:system-ui;text-align:center;padding:40px;font-size:1.3rem">✅ foto terkirim. kamu bisa tutup tab ini.</div>';
+  },900);
+};
+
+// ==== RESET ====
+document.getElementById('rst').onclick=()=>{
+  if(!confirm('Yakin mulai ulang? Semua jawaban, alasan & foto dihapus.')) return;
+  sfx.reset(); answers=[]; photoData=null;
+  localStorage.removeItem(KEY); localStorage.removeItem(PHOTO_KEY);
+  prog(); preview.src=''; preview.classList.remove('show'); sendBtn.classList.remove('show');
+  sendBtn.disabled=false; sendBtn.textContent='📤 kirim foto & selesai';
+  pa.classList.remove('show');
+  renderQ(0,false);
+};
+
+load(); if(answers.length>TOTAL) answers=answers.slice(0,TOTAL);
+prog(); render();
+})();
+</script>
+</body>
+</html>
